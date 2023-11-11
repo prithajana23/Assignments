@@ -1,0 +1,366 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{gensymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amssymb}
+\title{\textbf{MATLAB ASSIGNMENT 1}}
+\author{Pritha Jana,IMS21276}
+\date{}
+\begin{document}
+\maketitle
+\begin{enumerate}
+\item MATLAB code to solve a nonlinear equation $f(x)= 0$ using the following methods and test it for $f(x) = sin(x)+x^2-1$ take the interval $[0,1]$.
+\begin{enumerate}
+\item \textbf{Bisection Method}\\
+\underline{Code}:
+\begin{lstlisting}
+%Bisection method 
+close all;
+close all;
+
+upper_bound="Let's choose an upper bound--(a1)--"
+a1=input(upper_bound)
+lower_bound="Let's choose an lower bound--(b1)--"
+b1=input(lower_bound)
+fun1=@(x) sin(x)+x^2-1;
+c=(a1+b1)/2;
+i=0;
+data=[i a1 b1 c fun1(c)];
+while (abs(fun1(c)) > 10^(-4))
+if fun1(a1)*fun1(c)<0
+    b1=c;
+else
+    a1=c;
+end
+i=i+1;
+c=(a1+b1)/2;
+data=[i a1 b1 c fun1(c)]
+
+end
+
+\end{lstlisting}
+
+\underline{Result}: data=[ 7.0000    0.6406    0.6328    0.6367   -0.0000]
+\item \textbf{ Newton-Raphson Method}\\
+\underline{Code}:
+\begin{lstlisting}
+%Newton-Raphson Method
+close all;
+close all;
+
+nearest_point="Let's choose a nearest point--(x0)--"
+x0=input(nearest_point)
+fun1 =@(x) sin(x)+x^2-1.0;
+fun1(x0)
+syms f(x)
+f(x) = sin(x)+x^2;
+Df = diff(f,x);
+D=double(Df(x0))
+i=0;
+x=x0-(fun1(x0)/D)
+abs(fun1(x))
+while (abs(fun1(x))>10^(-8))
+i=i+1;
+x=x-(fun1(x)/D);
+data=[i x fun1(x)]
+end
+\end{lstlisting}
+\underline{Result}: data=[10.0000    0.6367    0.0000]
+\item \textbf{Secant Methods}\\
+\underline{Code}:
+\begin{lstlisting}
+%Secant Method 
+close all;
+close all;
+a1="Let's choose a nearest point--(x0)--"
+x0=input(a1)
+a2="Let's choose a nearest point--(x1)--"
+x1=input(a2)
+fun1 =@(x) sin(x)+x^2-1.0;
+i=0;
+x=x1-(((x0-x1)/(fun1(x0)-fun1(x1)))*fun1(x1));
+while (abs(fun1(x)) > 10^(-4))
+if fun1(x0)*fun1(x1)<0
+    x0=x;
+else
+    x1=x;
+end
+i=i+1;
+x=x1-((x0-x1)/(fun1(x0)-fun1(x1)))*fun1(x1)
+data=[i x0 x1 x fun1(x)]
+
+end           
+
+\end{lstlisting}
+\underline{Result}: data=[4.0000    0.6366    1.0000    0.6367   -0.0000]
+
+\item \textbf{Regula-Falsi Method}\\
+\underline{Code}:
+\begin{lstlisting}
+%Regula-falsi method
+close all;
+close all;
+upper_bound="Let's choose an upper bound--(a1)--"
+a1=input(upper_bound)
+lower_bound="Let's choose an lower bound--(b1)--"
+b1=input(lower_bound)
+fun1=@(x) sin(x)+x^2-1;
+x=a1-(fun1(a1)*((b1-a1)/(fun1(b1)-fun1(a1))))
+i=0;
+data=[i a1 b1 x fun1(x)];
+while (abs(fun1(x)) > 10^(-4))
+if fun1(a1)*fun1(x)<0
+    b1=x;
+else
+    a1=x;
+end
+i=i+1;
+x=a1-(fun1(a1)*((b1-a1)/(fun1(b1)-fun1(a1))))
+data=[i a1 b1 x fun1(x)]
+
+end
+\end{lstlisting}
+\underline{Result}: data=[4.0000    1.0000    0.6366    0.6367   -0.0000]
+
+\item \textbf{Fixed-point Iteration Method}\\
+\underline{Code}:
+\begin{lstlisting}
+%Fixed-point Iteration Method
+close all;
+close all;
+upper_bound="Let's choose any number--(x0)--"
+x0=input(upper_bound)
+fun1=@(x) sin(x)+x^2-1.0;
+g=@(x) sqrt(1-sin(x));
+i=0;
+fun1(x0)
+x1=g(x0);
+data=[i x1 fun1(x1)]
+while (abs(fun1(x0))>10^(-4))
+x0=g(x0)
+x1=g(x0)
+i=i+1;
+data=[i  x1   fun1(x1)]
+end
+   
+\end{lstlisting}
+\underline{Result}: data=[20.0000    0.6367   -0.0000]
+\end{enumerate}
+\item Apply Newton-Raphson method to approximate the root of equation $f(x)=x^3-x-3=0$ with initial guess $x0=0$.Show that the sequence diverges. Further,perform the Newton the Newton-Raphson method with initial guess sufficiently close to the root $r\approx1.6717$ and discuss the convergence in this case.
+\begin{enumerate}
+\item By Choosing nearest point $x0=0$\\
+\underline{Code}:
+\begin{lstlisting}
+%Newton-Raphson Method
+close all;
+close all;
+
+nearest_point="Let's choose a nearest point--(x0)--"
+x0=input(nearest_point)
+fun1 =@(x) x^3-x-3;
+fun1(x0)
+syms f(x)
+f(x) = sin(x)+x^2;
+Df = diff(f,x);
+D=double(Df(x0))
+i=0;
+x=x0-(fun1(x0)/D)
+abs(fun1(x))
+while (abs(fun1(x))>10^(-8))
+i=i+1;
+x=x-(fun1(x)/D);
+data=[i x fun1(x)]
+end
+\end{lstlisting}
+\underline{Result}: data=[7  -Inf   NaN]
+\item By choosing the point $x0=2$ as the root is given $r\approx 1.6717$
+\underline{Code}
+\begin{lstlisting}
+%Newton-Raphson Method
+close all;
+close all;
+
+nearest_point="Let's choose a nearest point--(x0)--"
+x0=input(nearest_point)
+fun1 =@(x) x^3-x-3;
+fun1(x0)
+syms f(x)
+f(x) = sin(x)+x^2;
+Df = diff(f,x);
+D=double(Df(x0))
+i=0;
+x=x0-(fun1(x0)/D)
+abs(fun1(x))
+while (abs(fun1(x))>10^(-8))
+i=i+1;
+x=x-(fun1(x)/D);
+data=[i x fun1(x)]
+end  
+\end{lstlisting}
+\underline{Result}: data=[ 1.0e+05*1.9751    0.0000    0.0000]\\
+The sequence $f(x)=x^3-x-3$ itself is a diverging sequence.
+\end{enumerate}
+\item Consider the equation $x^2-6x+5=0$.
+\begin{enumerate}
+\item Taking $x0=0$ and $x1=4.5$, generate first 7 terms of the iterative sequence of the secant method.
+\item Take the initial interval as $[a0, b0]=[0, 4.5]$, generate the first 7 terms of the iterative sequence of the regula-falsi method.
+Observe to which roots of the given equation does the above two sequences converge?
+\end{enumerate}
+\begin{enumerate}
+    \item Using Sccant Method \\
+    \underline{Code}:
+    \begin{lstlisting}
+%Secant Method 
+close all;
+close all;
+a1="Let's choose a nearest point--(x0)--"
+x0=input(a1)
+a2="Let's choose a nearest point--(x1)--"
+x1=input(a2)
+fun1 =@(x) x^2-6*x+5;
+i=0;
+x=x1-(((x0-x1)/(fun1(x0)-fun1(x1)))*fun1(x1));
+while (abs(fun1(x)) > 10^(-4))
+if fun1(x0)*fun1(x1)<0
+    x0=x;
+else
+    x1=x;
+end
+i=i+1;
+x=x1-((x0-x1)/(fun1(x0)-fun1(x1)))*fun1(x1)
+data=[i x0 x1 x fun1(x)]
+
+end  
+    \end{lstlisting}
+\underline{Result}:data=[ 7.0000    5.0000    5.4545    5.0000   -0.0000]\\
+Root converges to 5.0000.
+\item Using Regula-Falsi Method\\
+\underline{Code}:
+\begin{lstlisting}
+%Regula-falsi method
+close all;
+close all;
+upper_bound="Let's choose an upper bound--(a1)--"
+a1=input(upper_bound)
+lower_bound="Let's choose an lower bound--(b1)--"
+b1=input(lower_bound)
+fun1 =@(x) x^2-6*x+5;
+x=a1-(fun1(a1)*((b1-a1)/(fun1(b1)-fun1(a1))))
+i=0;
+data=[i a1 b1 x fun1(x)];
+while (abs(fun1(x)) > 10^(-4))
+if fun1(a1)*fun1(x)<0
+    b1=x;
+else
+    a1=x;
+end
+i=i+1;
+x=a1-(fun1(a1)*((b1-a1)/(fun1(b1)-fun1(a1))))
+data=[i a1 b1 x fun1(x)]
+
+end
+
+\end{lstlisting}
+\underline{Result}: data=[ 7.0000    1.0004   0  1.0001  -0.0003]\\
+Root converges to 1.0001 .
+\end{enumerate}
+\item Write a MATLAB code to solve a nonlinear equation f(x) = 0 using the Fixed-point iteration Method Consider the equation $f(x)=sin(x)+x^2-1$. Take the initial interval as [0,1]. There are three possible choices for the iteration functions namely\begin{enumerate} \item $g_1(x) =\sin^{-1}{(1-x^2)}$, \item $g_2(x) =-\sqrt{1-sin(x)}$, \item $g_3(x) =\sqrt{1-sin(x)}$.\end{enumerate}
+Discuss the convergence or divergence of all the iterative sequences. Can you Justify theoretically?
+\begin{enumerate}
+    \item Using $g_1(x) =\sin^{-1}{(1-x^2)}$
+    \begin{lstlisting}
+% Fixed-point Iteration Method
+close all;
+close all;
+upper_bound="Let's choose any number--(x0)--"
+x0=input(upper_bound)
+fun1=@(x) sin(x)+x^2-1.0;
+g=@(x) asin(1-x^2)
+i=0;
+fun1(x0)
+x1=g(x0);
+data=[i x1 fun1(x1)]
+while (abs(fun1(x0))>10^(-4))
+x0=g(x0)
+x1=x0
+i=i+1;
+data=[i  x1   fun1(x1)]
+end  
+    \end{lstlisting}
+    \underline{Result}: data=[1.0e+04 *
+4.0239 + 0.0000i   0.0001 + 0.0003i   0.0000 + 0.0013i
+x0 =
+Operation terminated by user during untitled2]\\
+ Not convergent.
+
+
+\underline{Theoretical proof}:
+
+$g_1$ is not contraction map for $x\in[0,1]$.
+\begin{align}
+    g'(x)&=\frac{-2x}{\sqrt{1-(1-x^2)^2}}\\
+    &=\frac{-2}{\sqrt{2-x^2}}\\
+    \lambda &=\max_{\operatornamewithlimits{0 \le x \le 1}}|g'(x)|\nless1
+\end{align}
+    \item Using $g_2(x) =-\sqrt{1-sin(x)}$
+    \begin{lstlisting}
+% Fixed-point Iteration Method
+close all;
+close all;
+upper_bound="Let's choose any number--(x0)--"
+x0=input(upper_bound)
+fun1=@(x) sin(x)+x^2-1.0;
+g=@(x) -sqrt(1-sin(x))
+i=0;
+fun1(x0)
+x1=g(x0);
+data=[i x1 fun1(x1)]
+while (abs(fun1(x0))>10^(-4))
+x0=g(x0)
+x1=x0
+i=i+1;
+data=[i  x1   fun1(x1)]
+end
+    \end{lstlisting}
+  \underline{Result}: data=[  6.0000   -1.4096   -0.0000]\\
+Not Convergent. \\
+\underline{Theoretical proof}:\\
+$g_2$ is not self map of $[0,1]$ to itself.
+\begin{align}
+     g_2(x) &=-\sqrt{1-sin(x)}\\
+     g_2'(x)&=\frac{\sqrt{1+\sin{x}}}{2}\\
+\end{align}
+
+   \item Using $g_3(x) =\sqrt{1-sin(x)}$
+    \begin{lstlisting}
+% Fixed-point Iteration Method
+close all;
+close all;
+upper_bound="Let's choose any number--(x0)--"
+x0=input(upper_bound)
+fun1=@(x) sin(x)+x^2-1.0;
+g=@(x) sqrt(1-sin(x))
+i=0;
+fun1(x0)
+x1=g(x0);
+data=[i x1 fun1(x1)]
+while (abs(fun1(x0))>10^(-4))
+x0=g(x0)
+x1=x0
+i=i+1;
+data=[i  x1   fun1(x1)]
+end  
+    \end{lstlisting}
+ \underline{Result}: data=[ 20.0000    0.6368    0.0001]\\
+ Convergent.\\
+\underline{Theoretical proof}:\\
+$g_3$ is converging to the root.
+\begin{align}
+    g_3(x)&=\sqrt{1-\sin{x}}\\
+    g_3'(x)&=-\frac{\sqrt{1+\sin{x}}}{2}\\
+    |g_3'(x)|&\le\frac{1}{\sqrt{2}}<1
+\end{align}
+\end{enumerate}
+\end{enumerate}
+\end{document}
